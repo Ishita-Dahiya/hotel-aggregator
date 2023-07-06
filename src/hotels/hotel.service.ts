@@ -5,14 +5,22 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Hotel } from './hotel.interface';
 import { CreateHotelDto } from "./dtos/create-hotel.dto";
+import { ClientProxyFactory, Transport, ClientProxy } from '@nestjs/microservices';
 
-import * as fs from 'fs';
 
 @Injectable()
 export class HotelService {
+  private readonly authClient: ClientProxy;
 
-
-  constructor(@InjectModel('Hotel') private readonly hotelModel: Model<Hotel>) {}
+  constructor(@InjectModel('Hotel') private readonly hotelModel: Model<Hotel>) {
+    this.authClient = ClientProxyFactory.create({
+      transport: Transport.TCP,
+      options: {
+        host: 'localhost',
+        port: 3001,
+      },
+    });
+  }
 
 
       async getAllHotels(): Promise<Hotel[]> {
@@ -43,8 +51,8 @@ export class HotelService {
           return createdMyModel.save();
         } catch (error) {
           throw new BadRequestException(
-            'Something bad happened',
-            { cause: new Error(), description: 'Some error description' })
+            'Some error occurred',
+            { cause: new Error(), description: 'Some error occurred.Please Try again.' })
         }
       }
 
@@ -55,6 +63,12 @@ export class HotelService {
 
       async deleteHotel(id: string): Promise<any> {
         return this.hotelModel.deleteOne({ _id: id }).exec();
-      }    
+      }
+      
+      async login(credentials: { email: string, password: string }) {
+        return this.authClient.send('validate_user', credentials).toPromise();
+      }
     
 }
+
+

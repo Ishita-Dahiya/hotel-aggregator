@@ -4,9 +4,8 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { User } from './login.interface';
-import { CreateUserDto } from './create-user.dto';
+import { CreateUserDto } from './dtos/create-user.dto';
 
-//import { UserService } from '../user/user.service';
 
 @Injectable()
 export class LoginService {
@@ -20,7 +19,9 @@ export class LoginService {
     const user = await this.userModel.findOne({ email: { $regex: new RegExp(`^${email}$`), $options: 'i' }, }).exec();
     if (user && user.password === password) {
       const payload = { email: user.email, sub: user.id };
-      return this.jwtService.sign(payload);
+      const token =  this.jwtService.sign(payload);
+      //const token =  sign({data: payload}, 'your-secret-key', { expiresIn: '1h' });
+      return {token, user}
     }
     return null;
   }
@@ -29,19 +30,20 @@ export class LoginService {
     return this.userModel.find().exec();
   }
 
-  async addUser(userModel: CreateUserDto): Promise<User> {
-    const hotelId = new mongoose.Types.ObjectId();
-    const finalData = {
-      _id: hotelId,
-      ...userModel
-    }
-    const createdMyModel = new this.userModel(finalData);
-    try {
+  async addUser(userModel: CreateUserDto): Promise<any> {
+    console.log(userModel.email);
+    const user = await this.userModel.findOne({email: userModel.email}).exec();
+    console.log(user);
+    if (user) {
+      return null;
+    } else {
+      const hotelId = new mongoose.Types.ObjectId();
+      const finalData = {
+        _id: hotelId,
+        ...userModel
+      }
+      const createdMyModel = new this.userModel(finalData);
       return createdMyModel.save();
-    } catch (error) {
-      throw new BadRequestException(
-        'Something bad happened',
-        { cause: new Error(), description: 'Some error description' })
     }
   }
 }
