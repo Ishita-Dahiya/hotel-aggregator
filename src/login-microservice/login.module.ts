@@ -7,20 +7,27 @@ import { UserSchema } from './login.schema';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { MongooseModule } from '@nestjs/mongoose';
 import { PassportModule } from '@nestjs/passport';
-import { jwtConstants } from './constants';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
+//import { jwtConstants } from './constants';
 
-
-const uri = "mongodb+srv://ishita11089:khWhMe8H1GOsHjCz@cluster0.ijojrmk.mongodb.net/Hotel-Aggregator?retryWrites=true&w=majority";
-
+console.log(process.env)
 
 @Module({
   imports: [
-    MongooseModule.forRoot(uri), MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
+    MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
     PassportModule,
-    JwtModule.register({
-      secret: jwtConstants.secret,
-      signOptions: { expiresIn: '1h' },
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get('JWT_SECRET'),
+        signOptions: { expiresIn: '1h' },
+      }),
+      inject: [ConfigService],
     }),
     ClientsModule.register([
       {
@@ -36,4 +43,8 @@ const uri = "mongodb+srv://ishita11089:khWhMe8H1GOsHjCz@cluster0.ijojrmk.mongodb
   controllers: [LoginController],
   providers: [LoginService, AuthGuard],
 })
+
+
 export class LoginModule {}
+
+

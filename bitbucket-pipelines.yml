@@ -1,0 +1,12 @@
+pipelines:
+  branches:
+    main:
+      - step:
+          name: Build and push Docker image
+          image: docker:latest
+          services:
+            - docker
+          script:
+            - docker build -t ishitavaid/hotel-app:latest .
+            - docker login -u ishitavaid -p Infosys12 ishitavaid
+            - docker push ishitavaid/hotel-app:latest

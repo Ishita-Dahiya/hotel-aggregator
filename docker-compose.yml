@@ -8,6 +8,9 @@ services:
       - '3000:3000'
     depends_on:
       - db
+    environment:
+      - JWT_SECRET=your-secret-key
+      - MONGODB_URI=mongodb+srv://ishita11089:khWhMe8H1GOsHjCz@cluster0.ijojrmk.mongodb.net/Hotel-Aggregator?retryWrites=true&w=majority
   db:
     image: mongo
     ports:
