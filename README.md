@@ -23,8 +23,15 @@
   [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
 
 ## Description
+<b>Hotel Aggregator App</b>
+It is built on [Nest](https://github.com/nestjs/nest) framework where user can search for list of hotels by name or by location.
+We have also build the APIs for the 'dealers' who want to register their hotel in the App so that it can be visible to others(customers) for hotel reservation. Other APIs are build to update the details of hotel/ delete the hotel record. User can also register to the app if they are visiting for the first time or login to the app.
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+MongoDB is being for database integration.
+Swagger for Documentation.
+
+## Steps to run the application
+Take a clone 'https://tools.publicis.sapient.com/bitbucket/scm/xwefb/ishita-vaid.git'. Switch to the main branch for the latest code.
 
 ## Installation
 
@@ -43,7 +50,11 @@ $ yarn run start:dev
 
 # production mode
 $ yarn run start:prod
+
+# Alternatively run docker-compose up --build -V, it will automatically install all the dependencies, make Nestjs App and mongoDB up and running.Then you can visit http://localhost:3000/api to see the API details and you can also try executing it to see the result!!
 ```
+
+
 
 ## Test
 
@@ -57,16 +68,6 @@ $ yarn run test:e2e
 # test coverage
 $ yarn run test:cov
 ```
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
 
 ## License
 
