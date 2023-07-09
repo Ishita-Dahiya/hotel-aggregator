@@ -2,7 +2,8 @@ import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { LoginService } from './login.service';
 import { LoginController } from './login.controller';
-import { AuthGuard } from './login.strategy';
+import { AuthGuard } from './login.guard';
+import { RolesGuard } from './role.guard';
 import { UserSchema } from './login.schema';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -35,13 +36,13 @@ console.log(process.env)
         transport: Transport.TCP,
         options: {
           host: 'localhost',
-          port: 3001,
+          port: 3004,
         },
       },
     ]),
   ],
   controllers: [LoginController],
-  providers: [LoginService, AuthGuard],
+  providers: [LoginService, AuthGuard, RolesGuard],
 })
 
 

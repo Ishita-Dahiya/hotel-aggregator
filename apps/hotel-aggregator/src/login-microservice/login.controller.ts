@@ -1,6 +1,6 @@
 import { MessagePattern } from '@nestjs/microservices';
 import { Controller, Post, Get, Body, HttpException, HttpStatus, UnauthorizedException, UseGuards } from "@nestjs/common";
-import { AuthGuard } from './login.strategy';
+import { AuthGuard } from './login.guard';
 import { LoginService } from './login.service';
 import { User } from './login.interface';
 import { CreateUserDto } from './dtos/create-user.dto';

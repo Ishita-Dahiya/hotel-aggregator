@@ -1,11 +1,12 @@
 import {
   Controller, Post, Get, Body, Param, HttpCode,
-  HttpException, HttpStatus, BadRequestException, Delete, Put, UseGuards, Res, UnauthorizedException, NotFoundException
+  HttpException, HttpStatus, BadRequestException, Delete, Put, UseGuards, Res, UnauthorizedException, NotFoundException, SetMetadata
 } from "@nestjs/common";
 import { CreateHotelDto } from "./dtos/create-hotel.dto";
 import { HotelService } from "./hotel.service";
 import { Hotel } from './hotel.interface';
-import { AuthGuard } from '../login-microservice/login.strategy';
+import { AuthGuard } from '../login-microservice/login.guard';
+import { RolesGuard } from '../login-microservice/role.guard';
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 
 
@@ -85,7 +86,8 @@ export class HotelController {
   @Post('/add')
   @ApiResponse({ status: 201, description: 'The hotel has been successfully created.' })
   @ApiOperation({ summary: 'Create a new hotel' })
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RolesGuard)
+  @SetMetadata('roles', ['dealer'])
   async addHotel(@Body() hotel: CreateHotelDto): Promise<Hotel> {
     try {
       return this.hotelService.addHotel(hotel);
