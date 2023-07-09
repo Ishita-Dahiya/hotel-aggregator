@@ -36,7 +36,7 @@ console.log(process.env)
         transport: Transport.TCP,
         options: {
           host: 'localhost',
-          port: 3004,
+          port: 3001,
         },
       },
     ]),
