@@ -4,7 +4,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import {HotelModule} from './hotels/hotel.module';
 import { AppService } from './app.service';
-import { LoginModule } from './login-microservice/login.module';
+import { LoginModule } from '../../login-microservice/login.module';
 
 
 @Module({

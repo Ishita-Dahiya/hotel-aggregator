@@ -10,7 +10,7 @@ import { CreateUserDto } from './dtos/create-user.dto';
 export class LoginController {
   constructor(private readonly loginService: LoginService) {}
 
-  @MessagePattern('validate_user')
+  @MessagePattern({ cmd: 'validate_user' })
   async login(credentials: { email: string, password: string }) {
     return await this.loginService.validateUser(credentials.email, credentials.password);
   }

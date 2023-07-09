@@ -21,7 +21,7 @@ async function bootstrap() {
     transport: Transport.TCP,
     options: {
       host: 'localhost',
-      port: 3001,
+      port: 6379,
     },
   });
   app.useGlobalPipes(new ValidationPipe())

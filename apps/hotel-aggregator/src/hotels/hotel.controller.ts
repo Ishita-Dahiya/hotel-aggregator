@@ -5,8 +5,8 @@ import {
 import { CreateHotelDto } from "./dtos/create-hotel.dto";
 import { HotelService } from "./hotel.service";
 import { Hotel } from './hotel.interface';
-import { AuthGuard } from '../login-microservice/login.guard';
-import { RolesGuard } from '../login-microservice/role.guard';
+import { AuthGuard } from '../../../login-microservice/login.guard';
+import { RolesGuard } from '../../../login-microservice/role.guard';
 import { ApiOperation, ApiResponse, ApiTags } from "@nestjs/swagger";
 
 

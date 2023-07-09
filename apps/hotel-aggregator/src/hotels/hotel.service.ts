@@ -17,7 +17,7 @@ export class HotelService {
       transport: Transport.TCP,
       options: {
         host: 'localhost',
-        port: 3001,
+        port: 6379,
       },
     });
   }
@@ -66,7 +66,8 @@ export class HotelService {
       }
       
       async login(credentials: { email: string, password: string }) {
-        return this.authClient.send('validate_user', credentials).toPromise();
+        //return this.authClient.send('validate_user', credentials).toPromise();
+        return this.authClient.send({ cmd: 'validate_user' }, credentials).toPromise();
       }
     
 }
