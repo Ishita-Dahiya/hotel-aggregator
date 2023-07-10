@@ -1,6 +1,6 @@
 import {
   Controller, Post, Get, Body, Param, HttpCode,
-  HttpException, HttpStatus, BadRequestException, Delete, Put, UseGuards, Res, UnauthorizedException, NotFoundException, SetMetadata
+  HttpException, HttpStatus, BadRequestException, Delete, Put, UseGuards, Res, UnauthorizedException, NotFoundException, SetMetadata, Session
 } from "@nestjs/common";
 import { CreateHotelDto } from "./dtos/create-hotel.dto";
 import { HotelService } from "./hotel.service";
@@ -88,34 +88,54 @@ export class HotelController {
   @ApiOperation({ summary: 'Create a new hotel' })
   @UseGuards(AuthGuard, RolesGuard)
   @SetMetadata('roles', ['dealer'])
-  async addHotel(@Body() hotel: CreateHotelDto): Promise<Hotel> {
+  async addHotel(@Body() hotel: CreateHotelDto, @Session() session: Record<string, any>): Promise<Hotel> {
     try {
+      const user = session.user;
+      if (!user) {
+        throw new UnauthorizedException('Session has been expired. User need to login again!');
+      }
       return this.hotelService.addHotel(hotel);
     } catch (error) {
-      throw new BadRequestException(
-        'Some error occurred',
-        { cause: new Error(), description: 'Some error occurred.Please Try again' })
+      if(error.response.error !== 'Unauthorized') {
+        throw new HttpException({
+          status: HttpStatus.FORBIDDEN,
+          error: 'This is an error while fetching data',
+        }, HttpStatus.FORBIDDEN, {
+          cause: error
+        });
+      } else {
+        throw new UnauthorizedException('Session has been expired. User need to login again!');
+      }
     }
   }
 
   @Put(':id')
   @HttpCode(201)
   @UseGuards(AuthGuard)
-  async update(@Param('id') id: string, @Body() hotel: CreateHotelDto): Promise<any> {
+  async update(@Param('id') id: string, @Body() hotel: CreateHotelDto, @Session() session: Record<string, any>): Promise<any> {
+    const user = session.user;
+      if (!user) {
+        throw new UnauthorizedException('Session has been expired. User need to login again!');
+      }
     return this.hotelService.updateHotel(id, hotel);
   }
 
 
   @Delete(':id')
   @UseGuards(AuthGuard)
-  async deleteHotel(@Param('id') id: string): Promise<any> {
+  async deleteHotel(@Param('id') id: string, @Session() session: Record<string, any>): Promise<any> {
+    const user = session.user;
+      if (!user) {
+        throw new UnauthorizedException('Session has been expired. User need to login again!');
+      }
     return this.hotelService.deleteHotel(id);
   }
 
   @Post('login')
-  async login(@Res() res, @Body() credentials: { email: string, password: string }) {
+  async login(@Res() res, @Body() credentials: { email: string, password: string }, @Session() session: Record<string, any>) {
     const result = await this.hotelService.login(credentials);
     if (result) {
+        session.user = result.user;
         return res.status(HttpStatus.OK).json({token:result.token, user: result.user})
       }
       else {

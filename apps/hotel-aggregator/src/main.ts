@@ -3,6 +3,7 @@ import { Transport } from '@nestjs/microservices';
 import { ValidationPipe } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { AppModule } from './app.module';
+import * as session from 'express-session';
 
 
 async function bootstrap() {
@@ -26,6 +27,13 @@ async function bootstrap() {
   });
   app.useGlobalPipes(new ValidationPipe())
   await app.startAllMicroservices();
+  app.use(
+    session({
+      secret: 'your-secret-key',
+      resave: false,
+      saveUninitialized: false,
+    }),
+  );
   await app.listen(3000);
 }
 bootstrap();
