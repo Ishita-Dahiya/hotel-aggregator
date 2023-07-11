@@ -10,10 +10,6 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { PassportModule } from '@nestjs/passport';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
-//import { jwtConstants } from './constants';
-
-console.log(process.env)
-
 @Module({
   imports: [
     ConfigModule.forRoot({

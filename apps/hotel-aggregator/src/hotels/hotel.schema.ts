@@ -23,5 +23,5 @@ export const HotelSchema = new mongoose.Schema({
     ],
     reviews: [String],
     hotelDescription: [String]
-  });
-  
+});
+

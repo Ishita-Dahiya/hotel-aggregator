@@ -1,4 +1,3 @@
-//import { Neo4jService } from "@dbc-tech/nest-neo4j";
 import { BadRequestException, Injectable } from "@nestjs/common";
 import * as mongoose from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
@@ -23,53 +22,52 @@ export class HotelService {
   }
 
 
-      async getAllHotels(): Promise<Hotel[]> {
-        return this.hotelModel.find().exec();
-      }
+  async getAllHotels(): Promise<Hotel[]> {
+    return this.hotelModel.find().exec();
+  }
 
-      async getLocations(): Promise<string[]> {
-        return await this.hotelModel.distinct('location').exec();
-      }
-    
+  async getLocations(): Promise<string[]> {
+    return await this.hotelModel.distinct('location').exec();
+  }
 
-      async getHotelByLocation(location: string): Promise<Hotel> {
-        return this.hotelModel.findOne({ location: { $regex: new RegExp(`^${location}$`), $options: 'i' }, }).exec();
-      }
 
-      async getHotelByName(hotelTitle: string): Promise<Hotel> {
-        return this.hotelModel.findOne({ hotelTitle: { $regex: new RegExp(`.*${hotelTitle}.*`), $options: 'i' }, }).exec();
-      }
-    
-      async addHotel(hotelModel: CreateHotelDto): Promise<Hotel> {
-        const hotelId = new mongoose.Types.ObjectId();
-        const finalData = {
-          _id: hotelId,
-          ...hotelModel
-        }
-        const createdMyModel = new this.hotelModel(finalData);
-        try {
-          return createdMyModel.save();
-        } catch (error) {
-          throw new BadRequestException(
-            'Some error occurred',
-            { cause: new Error(), description: 'Some error occurred.Please Try again.' })
-        }
-      }
+  async getHotelByLocation(location: string): Promise<Hotel> {
+    return this.hotelModel.findOne({ location: { $regex: new RegExp(`^${location}$`), $options: 'i' }, }).exec();
+  }
 
-      async updateHotel(id: string, hotelModel: CreateHotelDto): Promise<any> {
-        return this.hotelModel.updateOne({ _id: id }, hotelModel).exec();
-      }
-    
+  async getHotelByName(hotelTitle: string): Promise<Hotel> {
+    return this.hotelModel.findOne({ hotelTitle: { $regex: new RegExp(`.*${hotelTitle}.*`), $options: 'i' }, }).exec();
+  }
 
-      async deleteHotel(id: string): Promise<any> {
-        return this.hotelModel.deleteOne({ _id: id }).exec();
-      }
-      
-      async login(credentials: { email: string, password: string }) {
-        //return this.authClient.send('validate_user', credentials).toPromise();
-        return this.authClient.send({ cmd: 'validate_user' }, credentials).toPromise();
-      }
-    
+  async addHotel(hotelModel: CreateHotelDto): Promise<Hotel> {
+    const hotelId = new mongoose.Types.ObjectId();
+    const finalData = {
+      _id: hotelId,
+      ...hotelModel
+    }
+    const createdMyModel = new this.hotelModel(finalData);
+    try {
+      return createdMyModel.save();
+    } catch (error) {
+      throw new BadRequestException(
+        'Some error occurred',
+        { cause: new Error(), description: 'Some error occurred.Please Try again.' })
+    }
+  }
+
+  async updateHotel(id: string, hotelModel: CreateHotelDto): Promise<any> {
+    return this.hotelModel.updateOne({ _id: id }, hotelModel).exec();
+  }
+
+
+  async deleteHotel(id: string): Promise<any> {
+    return this.hotelModel.deleteOne({ _id: id }).exec();
+  }
+
+  async login(credentials: { email: string, password: string }) {
+    return this.authClient.send({ cmd: 'validate_user' }, credentials).toPromise();
+  }
+
 }
 
 

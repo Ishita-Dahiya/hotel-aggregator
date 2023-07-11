@@ -6,7 +6,7 @@ export class CreateHotelDto {
         message: 'hotelTitle is required'
     })
     @Length(3, 20, {
-        message: 'Title must be between 3 and 20 characters'
+        message: 'hotelTitle must be between 3 and 20 characters'
     })
     @ApiProperty({ example: 'Hilton', description: 'Name of the Hotel' })
     hotelTitle: String;

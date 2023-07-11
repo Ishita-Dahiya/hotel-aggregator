@@ -29,5 +29,9 @@ export class CreateUserDto {
     })
     @ApiProperty({ example: 'abc@gmail.com', description: 'Email Id of the Hotel' })
     email: String;
+    @IsNotEmpty({
+        message: 'role is required'
+    })
+    role: String;
   }
       

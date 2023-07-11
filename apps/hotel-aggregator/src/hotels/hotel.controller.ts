@@ -1,6 +1,6 @@
 import {
-  Controller, Post, Get, Body, Param, HttpCode,
-  HttpException, HttpStatus, BadRequestException, Delete, Put, UseGuards, Res, UnauthorizedException, NotFoundException, SetMetadata, Session
+  Controller, Post, Get, Body, Param, HttpCode,HttpException, HttpStatus, Delete, Put,
+   UseGuards, Res, UnauthorizedException, NotFoundException, SetMetadata, Session
 } from "@nestjs/common";
 import { CreateHotelDto } from "./dtos/create-hotel.dto";
 import { HotelService } from "./hotel.service";
@@ -19,7 +19,7 @@ export class HotelController {
   }
 
   @Get()
-  @ApiResponse({ status: 200, description: 'It will return list of all hotels'})
+  @ApiResponse({ status: 200, description: 'It will return list of all hotels' })
   @ApiOperation({ summary: 'Get list of all hotels' })
   async getAllHotels(): Promise<Hotel[]> {
     try {
@@ -52,7 +52,7 @@ export class HotelController {
   @Get(':loc')
   async getHotelByLocation(@Param('loc') location: string): Promise<Hotel> {
     try {
-      const hotelNames = await this.hotelService.getHotelByLocation(location); 
+      const hotelNames = await this.hotelService.getHotelByLocation(location);
       if (hotelNames) {
         return hotelNames;
       }
@@ -69,7 +69,7 @@ export class HotelController {
   @Get('/search/:title')
   async getHotelByName(@Param('title') name: string): Promise<Hotel> {
     try {
-      const hotelName = await this.hotelService.getHotelByName(name); 
+      const hotelName = await this.hotelService.getHotelByName(name);
       if (hotelName) {
         return hotelName;
       }
@@ -87,7 +87,7 @@ export class HotelController {
   @ApiResponse({ status: 201, description: 'The hotel has been successfully created.' })
   @ApiOperation({ summary: 'Create a new hotel' })
   @UseGuards(AuthGuard, RolesGuard)
-  @SetMetadata('roles', ['dealer'])
+  @SetMetadata('roles', ['dealer', 'admin'])
   async addHotel(@Body() hotel: CreateHotelDto, @Session() session: Record<string, any>): Promise<Hotel> {
     try {
       const user = session.user;
@@ -96,7 +96,7 @@ export class HotelController {
       }
       return this.hotelService.addHotel(hotel);
     } catch (error) {
-      if(error.response.error !== 'Unauthorized') {
+      if (error.response.error !== 'Unauthorized') {
         throw new HttpException({
           status: HttpStatus.FORBIDDEN,
           error: 'This is an error while fetching data',
@@ -111,23 +111,25 @@ export class HotelController {
 
   @Put(':id')
   @HttpCode(201)
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RolesGuard)
+  @SetMetadata('roles', ['dealer', 'admin'])
   async update(@Param('id') id: string, @Body() hotel: CreateHotelDto, @Session() session: Record<string, any>): Promise<any> {
     const user = session.user;
-      if (!user) {
-        throw new UnauthorizedException('Session has been expired. User need to login again!');
-      }
+    if (!user) {
+      throw new UnauthorizedException('Session has been expired. User need to login again!');
+    }
     return this.hotelService.updateHotel(id, hotel);
   }
 
 
   @Delete(':id')
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, RolesGuard)
+  @SetMetadata('roles', ['dealer', 'admin'])
   async deleteHotel(@Param('id') id: string, @Session() session: Record<string, any>): Promise<any> {
     const user = session.user;
-      if (!user) {
-        throw new UnauthorizedException('Session has been expired. User need to login again!');
-      }
+    if (!user) {
+      throw new UnauthorizedException('Session has been expired. User need to login again!');
+    }
     return this.hotelService.deleteHotel(id);
   }
 
@@ -135,13 +137,12 @@ export class HotelController {
   async login(@Res() res, @Body() credentials: { email: string, password: string }, @Session() session: Record<string, any>) {
     const result = await this.hotelService.login(credentials);
     if (result) {
-        session.user = result.user;
-        return res.status(HttpStatus.OK).json({token:result.token, user: result.user})
-      }
-      else {
-        throw new UnauthorizedException('User is not registered with the App');
-      }
+      session.user = result.user;
+      return res.status(HttpStatus.OK).json({ token: result.token, user: result.user })
+    }
+    else {
+      throw new UnauthorizedException('User is not registered with the App');
+    }
   }
-
 }
 
