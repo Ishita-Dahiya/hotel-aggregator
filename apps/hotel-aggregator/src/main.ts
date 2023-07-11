@@ -8,6 +8,7 @@ import * as session from 'express-session';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+  app.setGlobalPrefix('/api');
   const config = new DocumentBuilder()
     .setTitle('Hotel Aggregator APIs')
     .setDescription('List of Hotel Aggregator APIs with details')
