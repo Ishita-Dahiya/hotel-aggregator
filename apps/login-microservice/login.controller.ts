@@ -75,7 +75,7 @@ export class LoginController {
   @Get('/logout')
   logout(@Session() session: Record<string, any>, @Res() res: Response) {
     session.user = null;
-    res.redirect('/hotels');
+    res.redirect('/api/hotels');
   }
 
 }
