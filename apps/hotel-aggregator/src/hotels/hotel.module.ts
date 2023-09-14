@@ -21,3 +21,4 @@ import {AppModule} from '../../../billing-microservice/src/app.module';
   })
 
 export class HotelModule {}
+
