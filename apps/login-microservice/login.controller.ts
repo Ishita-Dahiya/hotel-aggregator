@@ -19,12 +19,8 @@ export class LoginController {
 
   @Get()
   @UseGuards(AuthGuard)
-  async getAllUsers(@Session() session: Record<string, any>): Promise<User[]> {
+  async getAllUsers(): Promise<User[]> {
     try {
-      const user = session.user;
-      if (!user) {
-        throw new UnauthorizedException('Session has been expired. User need to login again!');
-      }
       return this.loginService.getAllUsers();
     } catch (error) {
       console.log(error)
@@ -53,29 +49,20 @@ export class LoginController {
   @Put(':id')
   @HttpCode(201)
   @UseGuards(AuthGuard)
-  async updateUser(@Param('id') id: string, @Body() user: CreateUserDto, @Session() session: Record<string, any>): Promise<any> {
-    const userActive = session.user;
-    if (!userActive) {
-      throw new UnauthorizedException('Session has been expired. User need to login again!');
-    }
+  async updateUser(@Param('id') id: string, @Body() user: CreateUserDto): Promise<any> {
     return this.loginService.updateUser(id, user);
   }
 
 
   @Delete(':id')
   @UseGuards(AuthGuard)
-  async deleteUser(@Param('id') id: string, @Session() session: Record<string, any>): Promise<any> {
-    const userActive = session.user;
-    if (!userActive) {
-      throw new UnauthorizedException('Session has been expired. User need to login again!');
-    }
+  async deleteUser(@Param('id') id: string): Promise<any> {
     return this.loginService.deleteUser(id);
   }
 
-  @Get('/logout')
-  logout(@Session() session: Record<string, any>, @Res() res: Response) {
-    session.user = null;
-    res.redirect('/api/hotels');
-  }
+  // @Get('/logout')
+  // logout(@Res() res: Response) {
+  //   res.redirect('/api/hotels');
+  // }
 
 }

@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hotel-aggregator
+  # Add other metadata as needed
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: hotel-aggregator
+  template:
+    metadata:
+      labels:
+        app: hotel-aggregator
+    spec:
+      containers:
+        - name: hotel-aggregator
+          image: ishitavaid/hotel-aggregator:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: MONGO_URI
+              value: mongodb+srv://ishita11089:khWhMe8H1GOsHjCz@cluster0.ijojrmk.mongodb.net/Hotel-Aggregator?retryWrites=true&w=majority

@@ -1,0 +1,67 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Hotel {
+  _id: ID!
+  hotelTitle: String!
+  hotelAddress: String!
+  location: String!
+  rating: String
+  phoneNo: String!
+  emailID: String!
+  hotelType: String
+  reviews: [String!]
+  hotelDescription: [String!]
+}
+
+type User {
+  email: String
+  password: String
+  token: String
+}
+
+type Query {
+  getAllHotels: [Hotel!]!
+  getLocations: [String!]!
+  getHotelByLocation(loc: String!): Hotel!
+  getHotelByName(hotelTitle: String!): Hotel!
+  billing: String!
+}
+
+type Mutation {
+  addHotel(input: CreateHotelDto!): Boolean!
+  updateHotel(input: UpdateHotelDto!): Hotel!
+  deleteHotel(_id: ID!): Boolean!
+  login(credentials: CreateUserDto!): User!
+}
+
+input CreateHotelDto {
+  hotelTitle: String!
+  hotelAddress: String!
+  location: String!
+  rating: String
+  phoneNo: String!
+  emailID: String!
+  reviews: String
+  hotelDescription: String
+  hotelType: String
+}
+
+input UpdateHotelDto {
+  hotelTitle: String
+  hotelAddress: String
+  location: String
+  rating: String
+  phoneNo: String
+  emailID: String
+  reviews: [String!]
+  hotelDescription: [String!]
+  hotelType: String
+  _id: ID!
+}
+
+input CreateUserDto {
+  email: String!
+  password: String!
+}

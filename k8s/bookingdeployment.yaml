@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: booking
+  # Add other metadata as needed
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: booking
+  template:
+    metadata:
+      labels:
+        app: booking
+    spec:
+      containers:
+        - name: booking
+          image: ishitavaid/booking:latest
+          ports:
+            - containerPort: 8000

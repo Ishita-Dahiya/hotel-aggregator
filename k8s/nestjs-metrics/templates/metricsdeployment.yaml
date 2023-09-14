@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: booking-metrics
+  name: booking-metrics
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: booking-metrics
+  template:
+    metadata:
+      labels:
+        app: booking-metrics
+      annotations:
+        prometheus.io/scrape: 'true'
+        prometheus.io/path: /metrics
+        prometheus.io/port: '8000'
+    spec:
+      containers:
+        - image: ishitavaid/booking:metrics
+          name: booking-metrics
+          ports:
+            - containerPort: 8000

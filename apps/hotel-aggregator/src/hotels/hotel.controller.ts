@@ -23,7 +23,8 @@ export class HotelController {
   @ApiOperation({ summary: 'Get list of all hotels' })
   async getAllHotels(): Promise<Hotel[]> {
     try {
-      return this.hotelService.getAllHotels();
+      //return this.hotelService.getAllHotels();
+      return [];
     } catch (error) {
       throw new HttpException({
         status: HttpStatus.FORBIDDEN,
@@ -54,7 +55,8 @@ export class HotelController {
     try {
       const hotelNames = await this.hotelService.getHotelByLocation(location);
       if (hotelNames) {
-        return hotelNames;
+        //return hotelNames;
+        return null;
       }
       throw new NotFoundException();
     } catch (error) {
@@ -71,7 +73,8 @@ export class HotelController {
     try {
       const hotelName = await this.hotelService.getHotelByName(name);
       if (hotelName) {
-        return hotelName;
+        //return hotelNames;
+        return null;
       }
       throw new NotFoundException();
     } catch (error) {
@@ -94,7 +97,8 @@ export class HotelController {
       if (!user) {
         throw new UnauthorizedException('Session has been expired. User need to login again!');
       }
-      return this.hotelService.addHotel(hotel);
+      //return this.hotelService.addHotel(hotel);
+      return null;
     } catch (error) {
       if (error.response.error !== 'Unauthorized') {
         throw new HttpException({
@@ -118,7 +122,8 @@ export class HotelController {
     if (!user) {
       throw new UnauthorizedException('Session has been expired. User need to login again!');
     }
-    return this.hotelService.updateHotel(id, hotel);
+    //return this.hotelService.updateHotel(id, hotel);
+    return this.hotelService.updateHotel(id, null);
   }
 
 
@@ -145,4 +150,3 @@ export class HotelController {
     }
   }
 }
-

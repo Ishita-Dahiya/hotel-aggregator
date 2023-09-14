@@ -25,6 +25,15 @@ async function bootstrap() {
       host: 'localhost',
       port: 3001,
     },
+  },
+  );
+  app.connectMicroservice({
+    name: 'MICROSERVICE',
+    transport: Transport.TCP,
+    options: {
+      host: 'localhost',
+      port: 8000,
+    },
   });
   app.useGlobalPipes(new ValidationPipe())
   await app.startAllMicroservices();

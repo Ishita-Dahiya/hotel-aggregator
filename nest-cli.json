@@ -18,6 +18,15 @@
       "compilerOptions": {
         "tsConfigPath": "apps/hotel-aggregator/tsconfig.app.json"
       }
+    },
+    "billing-microservice": {
+      "type": "application",
+      "root": "apps/billing-microservice",
+      "entryFile": "main",
+      "sourceRoot": "apps/billing-microservice/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/billing-microservice/tsconfig.app.json"
+      }
     }
   }
 }

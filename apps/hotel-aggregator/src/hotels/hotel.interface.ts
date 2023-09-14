@@ -2,7 +2,7 @@ export interface Hotel {
   hotelTitle: String,
   hotelAddress: String,
   location: String,
-  rating: Number,
+  rating: String,
   phoneNo: String,
   emailID: String,
   hotelType: String,
