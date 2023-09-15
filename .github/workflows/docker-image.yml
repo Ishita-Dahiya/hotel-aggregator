@@ -22,12 +22,16 @@ jobs:
 
     - name: Install dependencies
       run: yarn install
-    
-    - name: Run Jest tests
-      run: npm test -- --detectOpenHandles
 
     - name: Run tests
       run: npm test
+    
+    - name: Exit early on test success
+      if: ${{ success() }}
+      run: exit 0
+
+    - name: Continue workflow
+      run: echo "Continuing with the workflow..."
 
   build_job:
 

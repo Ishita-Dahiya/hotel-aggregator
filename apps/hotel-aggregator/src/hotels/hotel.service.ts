@@ -33,7 +33,6 @@ export class HotelService {
 
 
   async getAllHotels(): Promise<Hotel[]> {
-    console.log('here22')
     return this.hotelModel.find().exec();
   }
 
