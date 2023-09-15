@@ -55,7 +55,7 @@ jobs:
         run: |
           npm run sonarqube-scanner
         env:
-          SONARQUBE_URL: ${{ secrets.SONARQUBE_URL }}
+          SONARQUBE_URL: ${{ secrets.SONARQUBE_URL_UPDATED }}
           SONARQUBE_TOKEN: ${{ secrets.SONARQUBE_TOKEN }}
 
   build_job:
