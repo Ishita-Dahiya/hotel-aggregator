@@ -46,7 +46,8 @@
     "passport-jwt": "^4.0.1",
     "passport-local": "^1.0.0",
     "prom-client": "^14.2.0",
-    "reflect-metadata": "^0.1.13"
+    "reflect-metadata": "^0.1.13",
+    "sonarqube-scanner": "^3.1.0"
   },
   "devDependencies": {
     "@nestjs/cli": "^10.1.7",
