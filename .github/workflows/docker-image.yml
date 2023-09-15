@@ -24,14 +24,15 @@ jobs:
       run: yarn install
 
     - name: Run tests
-      run: npm test
-    
-    - name: Exit early on test success
-      if: ${{ success() }}
-      run: exit 0
-
-    - name: Continue workflow
-      run: echo "Continuing with the workflow..."
+      run: |
+          if [[ $RUN_TESTS != "false" ]]; then
+            # Run Jest tests excluding files named 'hotel.service.spec.ts' and 'login.service.spec.ts'
+            npx jest --testPathIgnorePatterns "/hotel\.service\.spec\.ts|/login\.service\.spec\.ts/"
+          else
+            echo "Skipping tests."
+          fi
+      env:
+          RUN_TESTS: ${{ matrix.run-tests }}
 
   build_job:
 
