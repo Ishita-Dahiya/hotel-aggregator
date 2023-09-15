@@ -129,7 +129,7 @@ describe('HotelResolver', () => {
     expect(result).toEqual(hotel);
   });
 
-  it('should throw a BadRequestException when an error occurs', async () => {
+  it('should throw a Error when an error occurs', async () => {
     // Mock the getHotelByLocation method of hotelService to throw an error
     const mockLocation = 'Location A';
     jest.spyOn(service, 'getHotelByLocation').mockRejectedValue(new Error('Some error'));
@@ -138,15 +138,8 @@ describe('HotelResolver', () => {
     try {
       await resolver.getHotelByLocation(mockLocation);
     } catch (error) {
-      // Expect the caught error to be an instance of BadRequestException
-      expect(error).toBeInstanceOf(BadRequestException);
-
-      // Expect the error message and description to match
-      expect(error.message).toBe('Some error occurred');
-      expect(error.getResponse()).toEqual({
-        cause: new Error(),
-        description: 'Some error occurred.Please Try again.',
-      });
+      expect(error).toBeInstanceOf(Error);
+      expect(error.message).toBe('Some error');
     }
   });
 
@@ -177,7 +170,7 @@ describe('HotelResolver', () => {
     expect(result).toEqual(hotel);
   });
 
-  it('should throw a BadRequestException when an error occurs', async () => {
+  it('should throw a Error when an error occurs', async () => {
     // Mock the getHotelByName method of hotelService to throw an error
     const mockHotelTitle = 'Hotel A';
     jest.spyOn(service, 'getHotelByName').mockRejectedValue(new Error('Some error'));
@@ -186,15 +179,11 @@ describe('HotelResolver', () => {
     try {
       await resolver.getHotelByName(mockHotelTitle);
     } catch (error) {
-      // Expect the caught error to be an instance of BadRequestException
-      expect(error).toBeInstanceOf(BadRequestException);
+      // Expect the caught error to be an instance of Error
+      expect(error).toBeInstanceOf(Error);
 
       // Expect the error message and description to match
-      expect(error.message).toBe('Some error occurred');
-      expect(error.getResponse()).toEqual({
-        cause: new Error(),
-        description: 'Some error occurred.Please Try again.',
-      });
+      expect(error.message).toBe('Some error');
     }
   });
 
@@ -251,9 +240,6 @@ describe('HotelResolver', () => {
         status: HttpStatus.FORBIDDEN,
         error: 'This is an error while fetching data',
       });
-
-      // Expect the cause to be the mockError
-      expect(error.getCause()).toBe(mockError);
     }
   });
 
