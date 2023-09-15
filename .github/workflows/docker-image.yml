@@ -27,7 +27,7 @@ jobs:
       run: |
           if [[ $RUN_TESTS != "false" ]]; then
             # Run Jest tests excluding files named 'hotel.service.spec.ts' and 'login.service.spec.ts'
-            npx jest --testPathIgnorePatterns "/hotel\.service\.spec\.ts|/login\.service\.spec\.ts/"
+            npx jest --testPathIgnorePatterns 'login\.service\.spec\.ts|hotel\.service\.spec\.ts'
           else
             echo "Skipping tests."
           fi
